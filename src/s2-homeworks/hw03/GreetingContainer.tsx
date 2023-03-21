@@ -21,14 +21,15 @@ export const pureAddUser = (name: string, setError: any, setName: any, addUserCa
 export const pureOnBlur = (name: any, setError: any) => { // если имя пустое - показать ошибку
     if (name === "") {
         setError("Name should not be empty")
-    }else{setError("")
+    } else {
+        setError("")
     }
 }
 
 export const pureOnEnter = (e: any, addUser: any) => { // ес
-   if(e.code==="Enter"){
-       addUser(e.target.value)
-   }
+    if (e.code === "Enter") {
+        addUser(e.target.value)
+    }
 
     // ли нажата кнопка Enter - добавить
 }
@@ -45,11 +46,19 @@ const GreetingContainer: React.FC<GreetingContainerPropsType> = ({
     const [name, setName] = useState<string>('') // need to fix any
     const [error, setError] = useState<string>('') // need to fix any
 
-    const setNameCallback = (e: any) => { // need to fix any
-        setError("");
-        setName(e.currentTarget.value) // need to fix
+    const setNameCallback = (e: ChangeEvent<HTMLInputElement>) => { // need to fix any
+        const trimmedName = e.currentTarget.value.trim()
+        if (trimmedName) {
+            setName(e.currentTarget.value);
+            setError('')
+        } else {
+            setName("");
+            setError("name required")
+        }
+        // setError("");
+        // setName(e.currentTarget.value) // need to fix
 
-        error && setError('Name should not be empty')
+        // error && setError('Name should not be empty')
     }
     const addUser = () => {
         pureAddUser(name, setError, setName, addUserCallback)
@@ -59,13 +68,13 @@ const GreetingContainer: React.FC<GreetingContainerPropsType> = ({
         pureOnBlur(name, setError)
     }
 
-    const onEnter = (e: any) => {
+    const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
         pureOnEnter(e, addUser)
     }
 
     const totalUsers = users.length // need to fix
-    const lastUserName = totalUsers?
-        users[totalUsers - 1].name:
+    const lastUserName = totalUsers ?
+        users[totalUsers - 1].name :
         name
 
     return (
