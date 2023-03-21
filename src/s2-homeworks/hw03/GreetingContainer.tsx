@@ -12,7 +12,8 @@ export const pureAddUser = (name: string, setError: any, setName: any, addUserCa
         setError("Empty name")
     } else {
         addUserCallback(name);
-        setName('')
+        setName('');
+        setError("")
     }
     // если имя пустое - показать ошибку, иначе - добавить юзера и очистить инпут
 }
@@ -20,10 +21,16 @@ export const pureAddUser = (name: string, setError: any, setName: any, addUserCa
 export const pureOnBlur = (name: any, setError: any) => { // если имя пустое - показать ошибку
     if (name === "") {
         setError("Name should not be empty")
+    }else{setError("")
     }
 }
 
-export const pureOnEnter = (e: any, addUser: any) => { // если нажата кнопка Enter - добавить
+export const pureOnEnter = (e: any, addUser: any) => { // ес
+   if(e.code==="Enter"){
+       addUser(e.target.value)
+   }
+
+    // ли нажата кнопка Enter - добавить
 }
 
 // более простой и понятный для новичков
@@ -39,9 +46,10 @@ const GreetingContainer: React.FC<GreetingContainerPropsType> = ({
     const [error, setError] = useState<string>('') // need to fix any
 
     const setNameCallback = (e: any) => { // need to fix any
+        setError("");
         setName(e.currentTarget.value) // need to fix
 
-        error && setError('')
+        error && setError('Name should not be empty')
     }
     const addUser = () => {
         pureAddUser(name, setError, setName, addUserCallback)
